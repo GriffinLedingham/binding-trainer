@@ -762,3 +762,17 @@ table td.new {
   border-radius: 4px;
   padding:10px;
 }
+
+.change-class {
+  display: inline-block;
+  padding:5px;
+  border-radius: 4px;
+  color:white;
+}
+
+.change-class.paladin {
+  background:#dd8c9a;
+}
+.change-class.shaman {
+  background: blue;
+}

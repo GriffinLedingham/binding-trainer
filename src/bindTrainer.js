@@ -1,5 +1,8 @@
 import { BindViewManager } from "/src/bindViewManager.js";
-import { Paladin } from "/src/classes/paladin.js";
+import { Paladin } from '/src/classes/paladin.js'
+window.Paladin = Paladin
+import { Shaman } from '/src/classes/shaman.js'
+window.Shaman = Shaman
 
 class BindTrainer {
   constructor() {
@@ -10,7 +13,8 @@ class BindTrainer {
       errors: 0
     }
 
-    this.wowClass = new Paladin()
+    const className = localStorage.getItem('class') || 'Paladin'
+    this.wowClass = new window[className]()
 
     this.bindViewManager = new BindViewManager(this.wowClass, this.stats);
 
@@ -22,13 +26,42 @@ class BindTrainer {
 
     this.loopTimeout = null;
 
-    this.spellDown = null
+    this.spellDown = null;
 
-    this.startTs = +new Date()
+    this.timings = [];
+  }
+
+  changeClass() {
+    this.stats = {
+      spells: 0,
+      accuracy: 100,
+      sps: 0,
+      errors: 0
+    }
+
+    const className = localStorage.getItem('class') || 'Paladin'
+    this.wowClass = new window[className]()
+
+    this.bindViewManager = new BindViewManager(this.wowClass, this.stats);
+
+    this.keydowns = {};
+
+    this.goalQueue = []
+
+    this.loopTimeout = null;
+
+    this.spellDown = null;
+
+    this.timings = [];
   }
 
   startGameLoop() {
+    this.startTs = +new Date()
+    this.spellTimer = +new Date()
+
     this.goalQueue = []
+    this.timings = [];
+
     $('#queue').html('')
 
     this.stats.spells = 0
@@ -53,7 +86,6 @@ class BindTrainer {
 
   gameLoop() {
     this.addSpellToQueue(getRandomItem(Object.keys(this.wowClass.getSelectors())))
-    console.log(this.goalQueue)
 
     this.stats.accuracy = this.stats.spells / (this.stats.spells + this.stats.errors)
     this.stats.sps = this.stats.spells / ((+new Date() - this.startTs) / 1000)
@@ -65,6 +97,7 @@ class BindTrainer {
     try {
       let el = $(`.spellItem[data-spellid=${spellid}] img`)
       $('#queue').append(`<img style="border-radius:10px;margin-bottom:10px;" src="${el[0].src}" />`)
+      if(this.goalQueue.length == 0) this.spellTimer = +new Date()
       this.goalQueue.push({id: spellid, name: this.wowClass.getSelectors()[spellid]})
     } catch(e) {
 
@@ -77,6 +110,9 @@ class BindTrainer {
       this.goalQueue.shift()
       this.spellDown = null
       $('#queue img').first().remove()
+      this.timings.push(+new Date() - this.spellTimer)
+      this.spellTimer = null
+      if(this.goalQueue.length > 0) this.spellTimer = +new Date()
     } else {
       this.stats.errors++
     }
@@ -84,6 +120,7 @@ class BindTrainer {
     this.stats.accuracy = this.stats.spells / (this.stats.spells + this.stats.errors)
     this.stats.sps = this.stats.spells / ((+new Date() - this.startTs) / 1000)
 
+    $('#reac').text(Math.round((this.timings.reduce((a, b) => a + b, 0))/this.stats.spells) + 'ms')
     this.bindViewManager.updateStats()
   }
 
@@ -100,7 +137,11 @@ class BindTrainer {
       this.stopGameLoop()
     );
     $(document).on('change', "#speed", (e) => {
-      $('#speed_label').text($('#speed').val())
+      $('#speed_label').text($('#speed').val() + 'ms')
+    })
+    $(document).on('click', ".change-class", (e) => {
+      localStorage.setItem('class', $(e.currentTarget).data('class'))
+      location.reload()
     })
   }
 

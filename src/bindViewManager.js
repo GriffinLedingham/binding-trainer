@@ -5,7 +5,7 @@ class BindViewManager {
     this.binds = {}
     this.setupSelectors(wowClass.getSelectors());
 
-    const pastBinds = localStorage.getItem('binds')
+    const pastBinds = this.getBinds()
     const pastBindsObj = JSON.parse(pastBinds)
     for(let i in pastBindsObj) {
       this.addSpellToKey(i, pastBindsObj[i])
@@ -15,7 +15,7 @@ class BindViewManager {
 
   addSpellToKey(key, spellId) {
     if(spellId == 'No Spell') {
-      $(`.key[data-keyid="${key}"]`).html(key.toUpperCase())
+      $(`.key[data-keyid="${key}"]`).html(key.toString().toUpperCase())
       delete this.binds[key]
       this.saveBinds()
       return
@@ -36,14 +36,18 @@ class BindViewManager {
   }
 
   saveBinds() {
-    localStorage.setItem('binds', JSON.stringify(this.binds))
+    localStorage.setItem(this.wowClass.getKey() + 'binds', JSON.stringify(this.binds))
+  }
+
+  getBinds() {
+    return localStorage.getItem(this.wowClass.getKey() + 'binds')
   }
 
   updateStats() {
     $('#count').text(this.stats.spells)
     $('#errors').text(this.stats.errors)
-    $('#sps').text(this.stats.sps)
-    $('#acc').text(Math.min(100* this.stats.accuracy, 100) + '%')
+    $('#sps').text(this.stats.sps.toFixed(1) + '/sec')
+    $('#acc').text(Math.min(100* this.stats.accuracy, 100).toFixed(1) + '%')
   }
 
   processSpells(keyId) {

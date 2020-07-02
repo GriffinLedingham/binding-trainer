@@ -63,12 +63,17 @@
         Count: <span id="count">0</span><br>
         Errors: <span id="errors">0</span><br>
         Spells/sec: <span id="sps">0</span><br>
+        Reaction: <span id="reac">0</span><br>
         Accuracy: <span id="acc">100%</span><br>
         Speed: <span id="speed_label">700ms</span>
       </div>
       <div id="start">START</div>
       <div id="stop">STOP</div>
       <input id="speed" type="range" min="200" max="2000" value="700" step="100" class="slider">
+      <div>
+        <span class="change-class paladin" data-class="Paladin">Paladin</span>
+        <span class="change-class shaman" data-class="Shaman">Shaman</span>
+      </div>
     </div>
     <script type="module">
       import { BindTrainer } from "/src/bindTrainer.js";

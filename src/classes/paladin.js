@@ -3,6 +3,10 @@ class Paladin {
 
   }
 
+  getKey() {
+    return 'Paladin'
+  }
+
   getSelectors() {
     return {
       25912: 'Holy Shock',
