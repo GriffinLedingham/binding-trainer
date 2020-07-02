@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
+    <link href="src/styles/style.css" rel="stylesheet" />
+    <style></style>
+  </head>
+  <body>
+    <div style="display: inline-block;">
+      <div style="font-size: 24px;font-weight: bold;">Keymap:</div>
+      <div>
+        <div class="keyboard">
+          <div class="keyboardRow">
+            <span class="widekey" data-keyid="~">~</span>
+            <span class="key" data-keyid="1">1</span>
+            <span class="key" data-keyid="2">2</span>
+            <span class="key" data-keyid="3">3</span>
+            <span class="key" data-keyid="4">4</span>
+            <span class="key" data-keyid="5">5</span>
+          </div>
+          <div class="keyboardRow">
+            <span class="widekey" data-keyid="tab">Tab</span>
+            <span class="key" data-keyid="q">Q</span>
+            <span class="key" data-keyid="w">W</span>
+            <span class="key" data-keyid="e">E</span>
+            <span class="key" data-keyid="r">R</span>
+            <span class="key" data-keyid="t">T</span>
+          </div>
+          <div class="keyboardRow">
+            <span class="widekey" data-keyid="esc">Esc</span>
+            <span class="key" data-keyid="a">A</span>
+            <span class="key" data-keyid="s">S</span>
+            <span class="key" data-keyid="d">D</span>
+            <span class="key" data-keyid="f">F</span>
+            <span class="key" data-keyid="g">G</span>
+          </div>
+          <div class="keyboardRow">
+            <span class="widekey" data-keyid="ctrl">Ctrl</span>
+            <span class="key" data-keyid="z">Z</span>
+            <span class="key" data-keyid="x">X</span>
+            <span class="key" data-keyid="c">C</span>
+            <span class="key" data-keyid="v">V</span>
+            <span class="key" data-keyid="b">B</span>
+          </div>
+          <div class="keyboardRow">
+            <span class="nokey"></span>
+            <span class="key" data-keyid="alt">Alt</span>
+            <span class="key"></span>
+            <span class="key"></span>
+            <span class="key"></span>
+            <span class="key" data-keyid="shift">↑</span>
+          </div>
+        </div>
+      </div>
+      <div id="selectors"></div>
+    </div>
+    <div style="display: inline-block;vertical-align: top;">
+      <div style="font-size: 24px;font-weight: bold;">Queue:</div>
+      <div id="queue" style="width:400px;"></div>
+    </div>
+    <div style="display: inline-block;vertical-align: top;">
+      <div style="font-size: 24px;font-weight: bold;">Stats:</div>
+      <div id="hud">
+        Count: <span id="count">0</span><br>
+        Errors: <span id="errors">0</span><br>
+        Spells/sec: <span id="sps">0</span><br>
+        Accuracy: <span id="acc">100%</span><br>
+        Speed: <span id="speed_label">700ms</span>
+      </div>
+      <div id="start">START</div>
+      <div id="stop">STOP</div>
+      <input id="speed" type="range" min="200" max="2000" value="700" step="100" class="slider">
+    </div>
+    <script type="module">
+      import { BindTrainer } from "/src/bindTrainer.js";
+      window.bindTrainer = new BindTrainer();
+    </script>
+    <script></script>
+  </body>
+</html>
